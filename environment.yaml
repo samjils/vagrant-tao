@@ -1,0 +1,17 @@
+---
+ip: "192.168.10.17"
+name: tao
+hostname: tao
+cpus: 1
+memory: 2048
+provider: virtualbox
+
+authorize: ~/.ssh/id_rsa.pub
+
+keys:
+    - ~/.ssh/id_rsa
+
+folders:
+    - map: "~/Code"
+      to: "/home/vagrant/Code"
+
