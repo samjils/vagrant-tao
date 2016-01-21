@@ -15,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     if File.exists? envPath then
-        Homestead.configure(config, YAML::load(File.read(envPath)))
+        Provision.configure(config, YAML::load(File.read(envPath)))
     end
 
     if File.exists? afterScriptPath then
