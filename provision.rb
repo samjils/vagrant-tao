@@ -114,6 +114,29 @@ class Provision
     # Install All The Configured Nginx Sites
     config.vm.provision "shell" do |s|
         s.path = scriptDir + "/clear-nginx.sh"
+        s.keep_color = true
+    end
+
+    # Update Composer On Every Provision
+    config.vm.provision "shell" do |s|
+      s.inline = "/usr/local/bin/composer self-update"
+    end
+
+    # Configure All Of The Configured Databases
+    if settings.has_key?("databases")
+        settings["databases"].each do |db|
+          config.vm.provision "shell" do |s|
+            s.path = scriptDir + "/create-mysql.sh"
+            s.keep_color = true
+            s.args = [db]
+          end
+
+          config.vm.provision "shell" do |s|
+            s.path = scriptDir + "/create-postgres.sh"
+            s.keep_color = true
+            s.args = [db]
+          end
+        end
     end
 
     # Configure All Of The Configured Sites
@@ -123,6 +146,7 @@ class Provision
 
         config.vm.provision "shell" do |s|
           s.path = scriptDir + "/serve-#{type}.sh"
+          s.keep_color = true
           s.args = [
             site["map"], 
             site["to"], 
@@ -131,22 +155,24 @@ class Provision
             site["php"] ||= "7"
           ]
         end
-      end
-    end
 
-    # Configure All Of The Configured Databases
-    if settings.has_key?("databases")
-        settings["databases"].each do |db|
+        if site["install"]
+          repository = site["repo"] ||= "https://github.com/oat-sa/package-tao.git"
           config.vm.provision "shell" do |s|
-            s.path = scriptDir + "/create-mysql.sh"
-            s.args = [db]
-          end
-
-          config.vm.provision "shell" do |s|
-            s.path = scriptDir + "/create-postgres.sh"
-            s.args = [db]
+            s.path = scriptDir + "/install-#{type}.sh"
+            s.keep_color = true
+            s.args = [
+              site["map"],
+              site["to"],
+              repository,
+              site["db"] ||= site["map"].split('.').first,
+              site["username"] ||= "admin",
+              site["password"] ||= "PaSsW0!DHQ",
+              site["ext"] ||= ""
+            ]
           end
         end
+      end
     end
 
     # Configure All Of The Server Environment Variables
@@ -179,11 +205,6 @@ class Provision
 
     config.vm.provision "shell" do |s|
       s.inline = "service php7.0-fpm restart"
-    end
-
-    # Update Composer On Every Provision
-    config.vm.provision "shell" do |s|
-      s.inline = "/usr/local/bin/composer self-update"
     end
 
   end

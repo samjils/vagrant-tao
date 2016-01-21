@@ -15,3 +15,13 @@ folders:
     - map: "~/Code"
       to: "/home/vagrant/Code"
 
+databases:
+    - tao
+
+sites:
+    - map: tao.loc
+      to: /home/vagrant/Code/tao
+      install: true
+      ext: 'taoDevTools'
+      type: tao
+      php: 5
