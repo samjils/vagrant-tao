@@ -5,7 +5,7 @@ class Provision
     ENV['VAGRANT_DEFAULT_PROVIDER'] = settings["provider"] ||= "virtualbox"
 
     # Configure Local Variable To Access Scripts From Remote Location
-    scriptDir = File.dirname(__FILE__)
+    scriptDir = File.dirname(__FILE__) + "/scripts"
 
     # Prevent TTY Errors
     config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
@@ -123,7 +123,13 @@ class Provision
 
         config.vm.provision "shell" do |s|
           s.path = scriptDir + "/serve-#{type}.sh"
-          s.args = [site["map"], site["to"], site["port"] ||= "80", site["ssl"] ||= "443"]
+          s.args = [
+            site["map"], 
+            site["to"], 
+            site["port"] ||= "80", 
+            site["ssl"] ||= "443",
+            site["php"] ||= "7"
+          ]
         end
       end
     end
@@ -154,16 +160,25 @@ class Provision
           s.inline = "echo \"\nenv[$1] = '$2'\" >> /etc/php5/fpm/php-fpm.conf"
           s.args = [var["key"], var["value"]]
         end
+        config.vm.provision "shell" do |s|
+          s.inline = "echo \"\nenv[$1] = '$2'\" >> /etc/php/7.0/fpm/php-fpm.conf"
+          s.args = [var["key"], var["value"]]
+        end
 
         config.vm.provision "shell" do |s|
-            s.inline = "echo \"\n# Set Homestead Environment Variable\nexport $1=$2\" >> /home/vagrant/.profile"
+            s.inline = "echo \"\n# Set Environment Variable\nexport $1=$2\" >> /home/vagrant/.profile"
             s.args = [var["key"], var["value"]]
         end
       end
+    end
 
-      config.vm.provision "shell" do |s|
-        s.inline = "service php5-fpm restart"
-      end
+    # Restarts php-fpm services
+    config.vm.provision "shell" do |s|
+      s.inline = "service php5-fpm restart"
+    end
+
+    config.vm.provision "shell" do |s|
+      s.inline = "service php7.0-fpm restart"
     end
 
     # Update Composer On Every Provision
@@ -171,22 +186,5 @@ class Provision
       s.inline = "/usr/local/bin/composer self-update"
     end
 
-    # Turn off elastic search
-    config.vm.provision "shell" do |s|
-      s.inline = "service elasticsearch stop"
-    end
-
-    # Configure Blackfire.io
-    if settings.has_key?("blackfire")
-      config.vm.provision "shell" do |s|
-        s.path = scriptDir + "/blackfire.sh"
-        s.args = [
-          settings["blackfire"][0]["id"],
-          settings["blackfire"][0]["token"],
-          settings["blackfire"][0]["client-id"],
-          settings["blackfire"][0]["client-token"]
-        ]
-      end
-    end
   end
 end
