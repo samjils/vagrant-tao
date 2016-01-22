@@ -159,24 +159,6 @@ class Provision
         if site["install"]
           repository = site["repo"] ||= "https://github.com/oat-sa/package-tao.git"
 
-          to = nil
-          map = nil
-          settings["folders"].each do |item| 
-            to = item["to"]
-            map = item["map"] 
-          end
-
-          workingdir = site["to"]
-          workingdir.sub! to, map
-          
-          if Dir.entries(workingdir).size == 2
-            system("git clone -b develop " + repository + workingdir)
-          end
-
-          puts "Running composer update"
-          system("composer update -n -d " + workingdir)
-          puts "Composer update finished"
-
           config.vm.provision "shell" do |s|
             s.path = scriptDir + "/install-#{type}.sh"
             s.keep_color = true

@@ -17,6 +17,8 @@ TAO_EXTS="$7"
 
 [[ $8 = 5 ]] && PHP="php5" || PHP="php"
 
+echo $WORKING_DIRECTORY
+
 if [ ! -f "$WORKING_DIRECTORY/tao/manifest.php" ]; then
     echo "Please run me in the root of a TAO dist"
     exit 1
