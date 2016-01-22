@@ -7,10 +7,8 @@ PATH_KEY="${PATH_SSL}/${1}.key"
 PATH_CSR="${PATH_SSL}/${1}.csr"
 PATH_CRT="${PATH_SSL}/${1}.crt"
 
-# php versions check
+# php version check
 [[ $5 = 5 ]] && PATH_PHP="/var/run/php5-fpm.sock" || PATH_PHP="/var/run/php/php7.0-fpm.sock"
-
-echo $PATH_PHP
 
 if [ ! -f $PATH_KEY ] || [ ! -f $PATH_CSR ] || [ ! -f $PATH_CRT ]
 then

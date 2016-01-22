@@ -15,13 +15,7 @@ TAO_URL="http://$1"
 TAO_NS="http://$1/tao.rdf"
 TAO_EXTS="$7"
 
-if ! [ "$(ls -A $WORKING_DIRECTORY)" ]; then
-    git clone -b develop $3 $WORKING_DIRECTORY    
-fi
-
-echo "Running composer update"
-composer update -n
-echo "Composer update finished"
+[[ $8 = 5 ]] && PHP="php5" || PHP="php"
 
 if [ ! -f "$WORKING_DIRECTORY/tao/manifest.php" ]; then
     echo "Please run me in the root of a TAO dist"
@@ -30,11 +24,9 @@ fi
 
 version=`cat $WORKING_DIRECTORY/tao/includes/constants.php | grep "'TAO_VERSION'" | sed -r "s/define\('TAO_VERSION',.?'(.*)+'\);/\1/g"`
 
-echo ""
-echo "I am going to install TAO ${version} with extensions: $TAO_EXTS\n"
-echo ""
+echo "I am going to install TAO ${version} with extensions: $TAO_EXTS"
 
-php $WORKING_DIRECTORY/tao/scripts/taoInstall.php \
+$PHP $WORKING_DIRECTORY/tao/scripts/taoInstall.php \
     --db_user "${DATABASE_USER}" \
     --db_pass "${DATABASE_PASS}" \
     --db_host "${DATABASE_HOST}" \

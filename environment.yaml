@@ -12,7 +12,7 @@ keys:
     - ~/.ssh/id_rsa
 
 folders:
-    - map: "~/Code"
+    - map: "/Users/alroniks/Code"
       to: "/home/vagrant/Code"
 
 databases:
@@ -22,6 +22,8 @@ sites:
     - map: tao.loc
       to: /home/vagrant/Code/tao
       install: true
-      ext: 'taoDevTools'
+      username: admin
+      password: admin
+      ext: 'taoCe,taoDevTools'
       type: tao
       php: 5

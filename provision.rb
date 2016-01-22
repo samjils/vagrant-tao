@@ -158,6 +158,25 @@ class Provision
 
         if site["install"]
           repository = site["repo"] ||= "https://github.com/oat-sa/package-tao.git"
+
+          to = nil
+          map = nil
+          settings["folders"].each do |item| 
+            to = item["to"]
+            map = item["map"] 
+          end
+
+          workingdir = site["to"]
+          workingdir.sub! to, map
+          
+          if Dir.entries(workingdir).size == 2
+            system("git clone -b develop " + repository + workingdir)
+          end
+
+          puts "Running composer update"
+          system("composer update -n -d " + workingdir)
+          puts "Composer update finished"
+
           config.vm.provision "shell" do |s|
             s.path = scriptDir + "/install-#{type}.sh"
             s.keep_color = true
@@ -168,7 +187,8 @@ class Provision
               site["db"] ||= site["map"].split('.').first,
               site["username"] ||= "admin",
               site["password"] ||= "PaSsW0!DHQ",
-              site["ext"] ||= ""
+              site["ext"] ||= "",
+              site["php"] ||= "7"
             ]
           end
         end
@@ -195,17 +215,17 @@ class Provision
             s.inline = "echo \"\n# Set Environment Variable\nexport $1=$2\" >> /home/vagrant/.profile"
             s.args = [var["key"], var["value"]]
         end
+
+        # Restarts php-fpm services
+        config.vm.provision "shell" do |s|
+          s.inline = "service php5-fpm restart"
+        end
+
+        config.vm.provision "shell" do |s|
+          s.inline = "service php7.0-fpm restart"
+        end
+
       end
     end
-
-    # Restarts php-fpm services
-    config.vm.provision "shell" do |s|
-      s.inline = "service php5-fpm restart"
-    end
-
-    config.vm.provision "shell" do |s|
-      s.inline = "service php7.0-fpm restart"
-    end
-
   end
 end
