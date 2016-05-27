@@ -1,0 +1,3 @@
+alias gitify="php5 ~/Gitify/Gitify"
+
+alias up="php5 tao/scripts/taoUpdate.php"

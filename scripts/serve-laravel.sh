@@ -27,25 +27,9 @@ block="server {
 
     charset utf-8;
 
-    location ~ ^/([^//]*)/(views|locales)/. {
-    
-    }
-
-    location /tao/install {
-    
-    }
-    
-    location /tao/getFile.php {
-        rewrite  ^(.*)$ /tao/getFile.php last;
-    }
-    
-    # location / {
-    #     rewrite  ^/([^//]*)/.*$  /\$1/index.php;
-    # }
-
     location / {
-        rewrite  ^(.*)$ /index.php;
-    }    
+        try_files \$uri \$uri/ /index.php?\$query_string;
+    }
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
@@ -84,4 +68,4 @@ block="server {
 echo "$block" > "/etc/nginx/sites-available/$1"
 ln -fs "/etc/nginx/sites-available/$1" "/etc/nginx/sites-enabled/$1"
 service nginx restart
-service php5-fpm restart
+service php7.0-fpm restart

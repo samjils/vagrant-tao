@@ -16,14 +16,109 @@ folders:
       to: "/home/vagrant/Code"
 
 databases:
+    - mpart
+    - art
+    - act
+    - depp
+    - parcc
+    - pcg
     - tao
+    - invalsi
+    - modx
+    - modcast.by
+    - reksant.by
+    - inst.by
 
 sites:
-    - map: tao.loc
-      to: /home/vagrant/Code/tao
-      install: true
+    - map: mpart.loc
+      to: /home/vagrant/Code/tao/mpart
+      install: false
       username: admin
-      password: admin
+      password: Alro1788!1
+      ext: 'taoCe,taoDevTools,taoMp,taoMpArt'
+      type: tao
+      php: 5
+    - map: art.loc
+      to: /home/vagrant/Code/tao/art
+      install: false
+      username: admin
+      password: Alro1788!1
+      ext: 'taoCe,taoDevTools,taoMp,taoMpArt'
+      type: tao
+      php: 5
+    - map: depp.loc
+      to: /home/vagrant/Code/tao/depp
+      install: false
+      username: admin
+      password: Alro1788!!
+      ext: 'taoCe,taoDevTools,taoDepp'
+      type: tao
+      php: 5
+    - map: act.loc
+      to: /home/vagrant/Code/tao/act
+      install: false
+      username: admin
+      password: Alro1788!1
+      ext: 'taoCe,taoDevTools,taoAct'
+      type: tao
+      php: 5
+    - map: parcc.loc
+      to: /home/vagrant/Code/tao/parcc
+      install: false
+      username: admin
+      password: Alro1788!1
       ext: 'taoCe,taoDevTools'
       type: tao
       php: 5
+    - map: pcg.loc
+      to: /home/vagrant/Code/tao/pcg
+      install: false
+      username: admin
+      password: Alro1788!!
+      ext: 'taoCe,taoDevTools'
+      type: tao
+      php: 5
+    - map: tao.loc
+      to: /home/vagrant/Code/tao/tao
+      type: tao
+      php: 7
+    - map: invalsi.loc
+      to: /home/vagrant/Code/tao/invalsi
+      install: false
+      username: admin
+      password: Alro1788!1
+      ext: 'taoCe,taoDevTools'
+      type: tao
+      php: 5
+    - map: modx.loc
+      to: /home/vagrant/Code/alr/modx
+      type: modx
+      php: 7
+    - map: elogger.loc
+      to: /home/vagrant/Code/alr/elogger.loc/public
+      type: laravel
+      php: 7
+    - map: inst.by.loc
+      to: /home/vagrant/Code/alr/inst.by/public
+      type: laravel
+      php: 7
+    - map: modcasts.video.loc
+      to: /home/vagrant/Code/alr/modcasts.video
+      type: modx
+      php: 5
+    - map: mr3.loc
+      to: /home/vagrant/Code/alr/mr3
+      type: modx
+      php: 7
+    - map: repo.loc
+      to: /home/vagrant/Code/alr/repo.loc/public
+      type: laravel
+      php: 7
+    - map: repository.aestore.by.loc
+      to: /home/vagrant/Code/alr/repository.aestore.by/public
+      type: slim
+      php: 7
+    - map: pra.loc
+      to: /home/vagrant/Code/alr/pra
+      type: slim
+      php: 7

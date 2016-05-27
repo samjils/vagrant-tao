@@ -27,25 +27,11 @@ block="server {
 
     charset utf-8;
 
-    location ~ ^/([^//]*)/(views|locales)/. {
-    
-    }
-
-    location /tao/install {
-    
-    }
-    
-    location /tao/getFile.php {
-        rewrite  ^(.*)$ /tao/getFile.php last;
-    }
-    
-    # location / {
-    #     rewrite  ^/([^//]*)/.*$  /\$1/index.php;
-    # }
-
     location / {
-        rewrite  ^(.*)$ /index.php;
-    }    
+        if (!-e \$request_filename) {
+            rewrite ^/(.*)$ /index.php?q=\$1 last;
+        }
+    }
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
